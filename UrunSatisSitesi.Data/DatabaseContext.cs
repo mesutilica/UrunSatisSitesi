@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using UrunSatisSitesi.Data.Configurations;
 using UrunSatisSitesi.Entities;
 
 namespace UrunSatisSitesi.Data
@@ -59,6 +61,9 @@ namespace UrunSatisSitesi.Data
                     Name = "Admin",
                     Surname = "Administrator"
                 });
+            //modelBuilder.ApplyConfiguration(new BrandConfiguration()); // Marka yapılandırma ayarlarını bu şekilde modelbuilder a göstermemiz gerekli
+
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); // Otomatik olarak projedeki tüm configurationları ekliyor
 
             base.OnModelCreating(modelBuilder);
         }
