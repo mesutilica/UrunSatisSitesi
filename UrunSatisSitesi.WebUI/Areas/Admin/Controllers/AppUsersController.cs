@@ -37,52 +37,75 @@ namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
         // POST: AppUsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> CreateAsync(AppUser appUser)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    await _repository.AddAsync(appUser);
+                    await _repository.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    ModelState.AddModelError("", "Hata Oluştu!");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(appUser);
         }
 
         // GET: AppUsersController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> EditAsync(int id)
         {
-            return View();
+            var kayit = await _repository.FindAsync(id);
+
+            if (kayit == null) return NotFound();
+
+            return View(kayit);
         }
 
         // POST: AppUsersController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> EditAsync(int id, AppUser appUser)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _repository.Update(appUser);
+                    await _repository.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    ModelState.AddModelError("", "Hata Oluştu!");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(appUser);
         }
 
         // GET: AppUsersController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> DeleteAsync(int id)
         {
-            return View();
+            var kayit = await _repository.FindAsync(id);
+
+            if (kayit == null) return NotFound();
+
+            return View(kayit);
         }
 
         // POST: AppUsersController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, AppUser appUser)
         {
             try
             {
+                _repository.Delete(appUser);
                 return RedirectToAction(nameof(Index));
             }
             catch
