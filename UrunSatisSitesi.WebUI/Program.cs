@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 
-builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer()); // uygulamada dabasecontext imizde sql server kullanacaðýmýzý bildirdik
+builder.Services.AddDbContext<DatabaseContext>(); //options => options.UseSqlServer() uygulamada dabasecontext imizde sql server kullanacaðýmýzý bildirdik
 builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>)); // Projede bir yerde IRepository interfaci kullanýlmak istenirse, Repository nesnesinden bir örnek oluþtur ve kullanýma sun.
 // Dependency injection yöntemi olarak 3 farklý yöntemimiz var;
 // 1-AddSingleton : Oluþturmasý istenen nesneden uygulama çalýþtýðýnda 1 tane oluþtururu ve her istekte bu nesneyi gönderir.

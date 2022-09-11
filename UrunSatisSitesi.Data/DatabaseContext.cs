@@ -14,10 +14,10 @@ namespace UrunSatisSitesi.Data
     public class DatabaseContext : DbContext
     {
         // ctor yazıp klavyeden tab tab diyerek oluşturabiliriz
-        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
-        {
+        //public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+        //{
 
-        }
+        //}
         // Katmanlı mimaride bir katman (UrunSatisSitesi.Data katmanı gibi) başka bir katmana erişecekse bunu solution kısmından projenin altındaki dependencies bölümüne sağ tıklayıp add project reference diyerek açılan pencereden ilgili katmanı (UrunSatisSitesi.Entities gibi) yandaki check e tik koyarak kaydet deyip işlemi tamamlayabiliriz. Veya aşağıda yaptığımız gibi Appuser db set inin yazıp çıkan ampulden add project reference menüsüne tıklayıp bu işlemin otomatik yapılmasını sağlayabiliriz yalnız bu noktada dikkate etmemiz gereken nokta yazım yanlışı yapmamak! visual studio bulamayabilir yanlış yazarsak.
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Brand> Brands { get; set; }

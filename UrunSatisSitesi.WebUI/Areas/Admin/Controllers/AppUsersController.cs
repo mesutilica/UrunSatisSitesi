@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UrunSatisSitesi.Entities;
+using UrunSatisSitesi.Service.Repositories;
 
 namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
 {
@@ -7,9 +9,17 @@ namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
     public class AppUsersController : Controller
     {
         // GET: AppUsersController
+        private readonly IRepository<AppUser> _repository; // DI-Dependency injection yöntemiyle
+
+        public AppUsersController(IRepository<AppUser> repository)
+        {
+            _repository = repository;
+        }
+
+        // GET: AppUsersController
         public ActionResult Index()
         {
-            return View();
+            return View(_repository.GetAll());
         }
 
         // GET: AppUsersController/Details/5
