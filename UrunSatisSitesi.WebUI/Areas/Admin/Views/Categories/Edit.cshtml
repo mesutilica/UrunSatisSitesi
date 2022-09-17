@@ -1,16 +1,16 @@
 ﻿@model UrunSatisSitesi.Entities.Category
 
 @{
-    ViewData["Title"] = "Kategori Ekle";
+    ViewData["Title"] = "Kategori Güncelle";
 }
 
-<h1>Kategori Ekle</h1>
+<h1>Kategori Güncelle</h1>
 
 <h4>Kategori Bilgileri</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -39,7 +39,6 @@
             </div>
             <div class="form-group">
                 <label asp-for="ParentId" class="control-label"></label>
-                
                 <select asp-for="ParentId" class="form-select" asp-items="ViewBag.ParentId">
                     <option value="0">Ana Kategori</option>
                 </select>
@@ -51,7 +50,7 @@
                 <span asp-validation-for="OrderNo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Ekle" class="btn btn-primary" />
+                <input type="submit" value="Güncelle" class="btn btn-primary" />
             </div>
         </form>
     </div>

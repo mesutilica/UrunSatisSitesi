@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Drawing.Drawing2D;
 using UrunSatisSitesi.Entities;
 using UrunSatisSitesi.Service.Repositories;
 using UrunSatisSitesi.WebUI.Utils;
@@ -63,9 +61,12 @@ namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
         }
 
         // GET: CategoriesController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> EditAsync(int id)
         {
-            return View();
+            var liste = await _repository.GetAllAsync();
+            ViewBag.ParentId = new SelectList(liste, "Id", "Name");
+            var kayit = await _repository.FindAsync(id);
+            return View(kayit);
         }
 
         // POST: CategoriesController/Edit/5
