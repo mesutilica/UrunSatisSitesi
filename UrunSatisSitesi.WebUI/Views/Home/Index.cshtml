@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Slider>
+﻿@model HomePageViewModel
 
 @{
     ViewData["Title"] = "Anasayfa";
@@ -8,9 +8,9 @@
     
     <div class="carousel-inner">
                 
-        @foreach (var item in Model)
+        @foreach (var item in Model.Sliders)
         {
-            <div class="carousel-item @(item == Model.FirstOrDefault() ? "active" : "")">
+            <div class="carousel-item @(item == Model.Sliders.FirstOrDefault() ? "active" : "")">
                 <img src="/Img/@item.Image" class="d-block w-100" alt="...">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>@item.Title</h5>
@@ -29,4 +29,20 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
     </button>
+</div>
+
+<div class="row">
+
+    <h1 class="text-center display-3">Ürünlerimiz</h1>
+
+    @foreach (var item in Model.Products)
+    {
+        <div class="col">
+            <img src="/Img/@item.Image" class="d-block w-100" alt="@item.Name" title="@item.Name">
+            <h3>
+                @item.Name
+            </h3>
+        </div>
+    }    
+
 </div>

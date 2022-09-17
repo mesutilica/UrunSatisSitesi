@@ -63,43 +63,77 @@ namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("", "Hata Oluştu");
             }
+
+            var liste = await _repositoryCategory.GetAllAsync();
+            ViewBag.CategoryId = new SelectList(liste, "Id", "Name");
+
+            var markaliste = await _repositoryBrand.GetAllAsync();
+            ViewBag.BrandId = new SelectList(markaliste, "Id", "Name");
+
             return View(product);
         }
 
         // GET: ProductsController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> EditAsync(int id)
         {
-            return View();
+            var kayit = await _repository.FindAsync(id);
+
+            var liste = await _repositoryCategory.GetAllAsync();
+            ViewBag.CategoryId = new SelectList(liste, "Id", "Name");
+
+            var markaliste = await _repositoryBrand.GetAllAsync();
+            ViewBag.BrandId = new SelectList(markaliste, "Id", "Name");
+
+            return View(kayit);
         }
 
         // POST: ProductsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> EditAsync(int id, Product product, IFormFile? Image)
         {
             try
             {
+                if (Image is not null) product.Image = await FileHelper.FileLoaderAsync(Image);
+                _repository.Update(product);
+                await _repository.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                ModelState.AddModelError("", "Hata Oluştu");
             }
+
+            var liste = await _repositoryCategory.GetAllAsync();
+            ViewBag.CategoryId = new SelectList(liste, "Id", "Name");
+
+            var markaliste = await _repositoryBrand.GetAllAsync();
+            ViewBag.BrandId = new SelectList(markaliste, "Id", "Name");
+
+            return View(product);
         }
 
         // GET: ProductsController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> DeleteAsync(int id)
         {
-            return View();
+            var kayit = await _repository.FindAsync(id);
+
+            if (kayit != null)
+                _repository.Delete(kayit);
+
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: ProductsController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, Product product)
         {
             try
             {
+                _repository.Delete(product);
+
                 return RedirectToAction(nameof(Index));
             }
             catch
