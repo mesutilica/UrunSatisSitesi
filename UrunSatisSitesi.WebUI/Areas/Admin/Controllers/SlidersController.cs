@@ -39,7 +39,7 @@ namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
         // POST: SlidersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAsync(Slider slider, IFormFile Image)
+        public async Task<ActionResult> CreateAsync(Slider slider, IFormFile? Image)
         {
             try
             {
@@ -66,10 +66,14 @@ namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
         // POST: SlidersController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> EditAsync(int id, Slider slider, IFormFile? Image)
         {
             try
             {
+                if (Image is not null) slider.Image = await FileHelper.FileLoaderAsync(Image);
+                _repository.Update(slider);
+                await _repository.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -79,18 +83,24 @@ namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
         }
 
         // GET: SlidersController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> DeleteAsync(int id)
         {
-            return View();
+            var kayit = await _repository.FindAsync(id);
+
+            _repository.Delete(kayit);
+
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: SlidersController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, Slider slider)
         {
             try
             {
+                _repository.Delete(slider);
+
                 return RedirectToAction(nameof(Index));
             }
             catch

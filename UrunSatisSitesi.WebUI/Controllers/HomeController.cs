@@ -1,21 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using UrunSatisSitesi.Entities;
+using UrunSatisSitesi.Service.Repositories;
 using UrunSatisSitesi.WebUI.Models;
 
 namespace UrunSatisSitesi.WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IRepository<Slider> _slider;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IRepository<Slider> slider)
         {
-            _logger = logger;
+            _slider = slider;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
-            return View();
+            var sliders = await _slider.GetAllAsync();
+
+            return View(sliders);
         }
 
         public IActionResult Privacy()
