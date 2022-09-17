@@ -1,6 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using UrunSatisSitesi.Data;
 using UrunSatisSitesi.Service.Repositories;
+using UrunSatisSitesi.WebUI.Areas.Admin.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 
+builder.Services.AddDbContext<AdminContext>();
 builder.Services.AddDbContext<DatabaseContext>(); //options => options.UseSqlServer() uygulamada dabasecontext imizde sql server kullanacaðýmýzý bildirdik
 builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>)); // Projede bir yerde IRepository interfaci kullanýlmak istenirse, Repository nesnesinden bir örnek oluþtur ve kullanýma sun.
 // Dependency injection yöntemi olarak 3 farklý yöntemimiz var;
@@ -36,7 +37,7 @@ app.UseAuthorization(); // Authorization : yetkilendirme, rol vb iþlemler için
 
 app.MapControllerRoute(
             name: "admin",
-            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+            pattern: "{area:exists}/{controller=Main}/{action=Index}/{id?}"
           );
 
 app.MapControllerRoute(

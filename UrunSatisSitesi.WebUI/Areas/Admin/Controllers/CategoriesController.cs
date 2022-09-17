@@ -72,31 +72,42 @@ namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
         // POST: CategoriesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> EditAsync(int id, Category category, IFormFile? Image)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    if (Image is not null) category.Image = await FileHelper.FileLoaderAsync(Image);
+                    _repository.Update(category);
+                    await _repository.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    ModelState.AddModelError("", "Hata Oluştu!");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(category);
         }
 
         // GET: CategoriesController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> DeleteAsync(int id)
         {
-            return View();
+            var kayit = await _repository.FindAsync(id);
+            return View(kayit);
         }
 
         // POST: CategoriesController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, Category category)
         {
             try
             {
+                _repository.Delete(category);
+                _repository.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
