@@ -1,10 +1,10 @@
-﻿@model IEnumerable<Category>
+﻿@model IEnumerable<Product>
 
 @{
-    ViewData["Title"] = "Kategoriler";
+    ViewData["Title"] = "Ürünler";
 }
 
-<h1>Kategoriler</h1>
+<h1>Ürünler</h1>
 
 <p>
     <a asp-action="Create">Yeni Ekle</a>
@@ -25,13 +25,13 @@
                 @Html.DisplayNameFor(model => model.IsActive)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsTopMenu)
+                @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ParentId)
+                @Html.DisplayNameFor(model => model.Stock)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OrderNo)
+                @Html.DisplayNameFor(model => model.IsHome)
             </th>
             <th></th>
         </tr>
@@ -53,13 +53,13 @@
                     @Html.DisplayFor(modelItem => item.IsActive)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IsTopMenu)
+                    @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ParentId)
+                    @Html.DisplayFor(modelItem => item.Stock)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.OrderNo)
+                    @Html.DisplayFor(modelItem => item.IsHome)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Düzenle</a> |
