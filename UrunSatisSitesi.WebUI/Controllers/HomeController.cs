@@ -10,11 +10,13 @@ namespace UrunSatisSitesi.WebUI.Controllers
     {
         private readonly IRepository<Slider> _slider;
         private readonly IRepository<Product> _productRepository;
+        private readonly IRepository<Contact> _contactRepository;
 
-        public HomeController(IRepository<Slider> slider, IRepository<Product> productRepository)
+        public HomeController(IRepository<Slider> slider, IRepository<Product> productRepository, IRepository<Contact> contactRepository)
         {
             _slider = slider;
             _productRepository = productRepository;
+            _contactRepository = contactRepository;
         }
 
         public async Task<IActionResult> IndexAsync()
@@ -34,6 +36,22 @@ namespace UrunSatisSitesi.WebUI.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+        public IActionResult Contact()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ContactAsync(Contact contact)
+        {
+            if (ModelState.IsValid)
+            {
+                await _contactRepository.AddAsync(contact);
+                await _contactRepository.SaveChangesAsync();
+                TempData["mesaj"] = "<div class='alert alert-success'>Mesajınız Gönderilmiştir. Teşekkürler..</div>";
+                return RedirectToAction("Contact");
+            }
+            return View(contact);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
