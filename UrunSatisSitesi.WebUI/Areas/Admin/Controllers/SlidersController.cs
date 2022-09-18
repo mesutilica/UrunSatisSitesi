@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UrunSatisSitesi.Entities;
 using UrunSatisSitesi.Service.Repositories;
@@ -6,7 +6,7 @@ using UrunSatisSitesi.WebUI.Utils;
 
 namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area("Admin"), Authorize]
     public class SlidersController : Controller
     {
         private readonly IRepository<Slider> _repository;

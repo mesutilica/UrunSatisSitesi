@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UrunSatisSitesi.Entities;
 using UrunSatisSitesi.Service.Repositories;
@@ -6,7 +6,7 @@ using UrunSatisSitesi.WebUI.Utils;
 
 namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area("Admin"), Authorize]
     public class NewsController : Controller
     {
         private readonly IRepository<News> _repository;

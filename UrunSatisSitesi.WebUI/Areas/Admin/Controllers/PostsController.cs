@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UrunSatisSitesi.Entities;
 using UrunSatisSitesi.Service.Repositories;
+using UrunSatisSitesi.WebUI.Utils;
 
 namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area("Admin"), Authorize]
     public class PostsController : Controller
     {
         private readonly IRepository<Post> _repository;
@@ -16,9 +17,10 @@ namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
         }
 
         // GET: PostsController
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var liste = await _repository.GetAllAsync();
+            return View(liste);
         }
 
         // GET: PostsController/Details/5
@@ -36,52 +38,75 @@ namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
         // POST: PostsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> CreateAsync(Post post, IFormFile? Image)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    if (Image is not null) post.Image = await FileHelper.FileLoaderAsync(Image);
+                    await _repository.AddAsync(post);
+                    await _repository.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    ModelState.AddModelError("", "Hata Oluştu!");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(post);
         }
 
         // GET: PostsController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var data = _repository.Find(id);
+
+            return View(data);
         }
 
         // POST: PostsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> EditAsync(int id, Post post, IFormFile? Image)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    if (Image is not null) post.Image = await FileHelper.FileLoaderAsync(Image);
+                    _repository.Update(post);
+                    await _repository.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    ModelState.AddModelError("", "Hata Oluştu!");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(post);
         }
 
         // GET: PostsController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var data = _repository.Find(id);
+
+            return View(data);
         }
 
         // POST: PostsController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, Post post)
         {
             try
             {
+                _repository.Delete(post);
+                _repository.SaveChanges();
+
                 return RedirectToAction(nameof(Index));
             }
             catch

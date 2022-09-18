@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using UrunSatisSitesi.Entities;
 using UrunSatisSitesi.Service.Repositories;
@@ -6,7 +7,7 @@ using UrunSatisSitesi.WebUI.Utils;
 
 namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area("Admin"), Authorize]
     public class CategoriesController : Controller
     {
         private readonly IRepository<Category> _repository;

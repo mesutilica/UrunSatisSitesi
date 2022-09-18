@@ -1,6 +1,7 @@
 using UrunSatisSitesi.Data;
 using UrunSatisSitesi.Service.Repositories;
 using UrunSatisSitesi.WebUI.Areas.Admin.Data;
+using Microsoft.AspNetCore.Authentication.Cookies; // Oturum iþlemleri için gerekli kütüphane
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,16 @@ builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>)); // P
 // 1-AddSingleton : Oluþturmasý istenen nesneden uygulama çalýþtýðýnda 1 tane oluþtururu ve her istekte bu nesneyi gönderir.
 // 2-AddTransient : Oluþturmasý istenen nesne için gelen her istekte yani bir nesne oluþturur.
 // 3-AddScoped : Oluþturmasý istenen nesne için gelen isteðe bakarak eðer daha önce oluþmuþ bir örnek varsa geriye onu döner, yoksa yeni nesne oluþturup döner.
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
+{
+    x.LoginPath = "/Admin/Login";
+    x.LogoutPath = "/Admin/Logout";
+    x.AccessDeniedPath = "/AccessDenied";
+    x.Cookie.Name = "Admin";
+    x.Cookie.MaxAge = TimeSpan.FromDays(1); // Cookie süresi 1 gün belirledik
+    x.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
