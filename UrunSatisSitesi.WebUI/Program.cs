@@ -1,7 +1,8 @@
 using UrunSatisSitesi.Data;
 using UrunSatisSitesi.Service.Repositories;
-using UrunSatisSitesi.WebUI.Areas.Admin.Data;
 using Microsoft.AspNetCore.Authentication.Cookies; // Oturum iþlemleri için gerekli kütüphane
+using UrunSatisSitesi.Service.Abstract;
+using UrunSatisSitesi.Service.Concrete;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,13 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 
-builder.Services.AddDbContext<AdminContext>();
 builder.Services.AddDbContext<DatabaseContext>(); //options => options.UseSqlServer() uygulamada dabasecontext imizde sql server kullanacaðýmýzý bildirdik
 builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>)); // Projede bir yerde IRepository interfaci kullanýlmak istenirse, Repository nesnesinden bir örnek oluþtur ve kullanýma sun.
 // Dependency injection yöntemi olarak 3 farklý yöntemimiz var;
 // 1-AddSingleton : Oluþturmasý istenen nesneden uygulama çalýþtýðýnda 1 tane oluþtururu ve her istekte bu nesneyi gönderir.
 // 2-AddTransient : Oluþturmasý istenen nesne için gelen her istekte yani bir nesne oluþturur.
 // 3-AddScoped : Oluþturmasý istenen nesne için gelen isteðe bakarak eðer daha önce oluþmuþ bir örnek varsa geriye onu döner, yoksa yeni nesne oluþturup döner.
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>(); // Eeey uygulama! sana ICategoryRepository isteði gelirse eðer ona CategoryRepository sýnýfýndan bir örnek ver.
 
 // Oturum açma ayarlarý:
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>

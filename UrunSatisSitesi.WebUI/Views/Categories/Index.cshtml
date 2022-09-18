@@ -4,5 +4,20 @@
     ViewData["Title"] = @Model.Name;
 }
 
-<h1>@Model.Name</h1>
+<div class="row">
 
+    <h1 class="text-center display-3">
+        @Model.Name
+    </h1>
+
+    @foreach (var item in Model.Products)
+    {
+        <div class="col">
+            <img src="/Img/@item.Image" class="" alt="@item.Name" title="@item.Name" width="300">
+            <h3>
+                @item.Name
+            </h3>
+        </div>
+    }
+
+</div>

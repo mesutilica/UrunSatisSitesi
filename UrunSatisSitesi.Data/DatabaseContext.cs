@@ -25,7 +25,11 @@ namespace UrunSatisSitesi.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // Burada optionsBuilder ı kullanarak sql server ayarlarımızı belirleyebiliyoruz
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB; Database=UrunSatisSitesi; trusted_connection=true;"); // bu metot ile uygulamada sql server kullanacağımızı belirttik
+            //optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB; Database=UrunSatisSitesi; trusted_connection=true;"); // bu metot ile uygulamada sql server kullanacağımızı belirttik
+
+
+            // Filezilla ftp
+
             base.OnConfiguring(optionsBuilder);
         }
 

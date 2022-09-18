@@ -7,7 +7,7 @@ namespace UrunSatisSitesi.Service.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class, IEntity, new() // IRepository nin altı kızarınca üzerine gelin ampülden
     {
-        private readonly DatabaseContext _databaseContext;
+        internal readonly DatabaseContext _databaseContext;
         DbSet<T> _dbSet;
 
         public Repository(DatabaseContext databaseContext)
