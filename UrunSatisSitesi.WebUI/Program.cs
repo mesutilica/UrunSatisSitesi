@@ -17,6 +17,7 @@ builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>)); // P
 // 2-AddTransient : Oluþturmasý istenen nesne için gelen her istekte yani bir nesne oluþturur.
 // 3-AddScoped : Oluþturmasý istenen nesne için gelen isteðe bakarak eðer daha önce oluþmuþ bir örnek varsa geriye onu döner, yoksa yeni nesne oluþturup döner.
 
+// Oturum açma ayarlarý:
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
 {
     x.LoginPath = "/Admin/Login";
@@ -25,6 +26,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     x.Cookie.Name = "Admin";
     x.Cookie.MaxAge = TimeSpan.FromDays(1); // Cookie süresi 1 gün belirledik
     x.Cookie.IsEssential = true;
+});
+// Yetkilendirme ayarlarý:
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy => policy.RequireClaim("Role", "Admin"));
+    options.AddPolicy("UserPolicy", policy => policy.RequireClaim("Role", "User"));
 });
 
 var app = builder.Build();

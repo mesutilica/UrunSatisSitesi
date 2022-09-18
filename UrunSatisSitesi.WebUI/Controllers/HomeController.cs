@@ -37,10 +37,18 @@ namespace UrunSatisSitesi.WebUI.Controllers
         {
             return View();
         }
+
+        [Route("AccessDenied")]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
         public IActionResult Contact()
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> ContactAsync(Contact contact)
         {

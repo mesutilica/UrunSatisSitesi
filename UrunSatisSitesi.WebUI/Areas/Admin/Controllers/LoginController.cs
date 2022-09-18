@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using UrunSatisSitesi.Entities;
 using UrunSatisSitesi.Service.Repositories;
 
@@ -18,6 +20,7 @@ namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> IndexAsync(string email, string password)
         {
@@ -29,10 +32,32 @@ namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
             }
             else
             {
+                var kullaniciHaklari = new List<Claim>() // claim = hak
+                {
+                    new Claim(ClaimTypes.Email, kullanici.Email),
+                    new Claim(ClaimTypes.Name, kullanici.Name),
+                    new Claim("Role", kullanici.IsAdmin ? "Admin" : "User"),
+                    new Claim("UserId", kullanici.Id.ToString())
+                };
 
+                var kullaniciKimligi = new ClaimsIdentity(kullaniciHaklari, "Login");
+
+                ClaimsPrincipal principal = new(kullaniciKimligi);
+
+                await HttpContext.SignInAsync(principal);
+
+                return Redirect("/Admin");
             }
 
             return View();
         }
+
+        [Route("Admin/Logout")]
+        public async Task<IActionResult> LogoutAsync()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

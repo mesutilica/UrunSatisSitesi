@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UrunSatisSitesi.Entities;
 using UrunSatisSitesi.Service.Repositories;
 
 namespace UrunSatisSitesi.WebUI.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area("Admin"), Authorize(Policy = "AdminPolicy")] // Authorize attribute üne AdminPolicy i tanımlayarak yetkilendirme yaptık sadece AdminPolicy deki yetkilere sahip olanlar buraya gelebilsin dedik.
     public class AppUsersController : Controller
     {
         // GET: AppUsersController
